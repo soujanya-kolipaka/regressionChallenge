@@ -2,7 +2,11 @@
 title: "Regression & Interpretability Challenge"
 subtitle: "Don't Trust Linear Models - The Perils of Non-Linearity"
 format:
-  html: default
+  html:
+    minimal: true
+    smooth-scroll: false
+    code-copy: false
+    css: styles.css
 execute:
   echo: true
   eval: true
@@ -53,44 +57,32 @@ In practice, we just assume linearity is "close enough" to monotonicity. But wha
 
 **The Devastating Reality:** Even tiny amounts of non-linearity can completely destroy our regression conclusions. A relationship that looks "close enough" to linear can give us coefficients that are completely wrong: wrong signs, wrong magnitudes, wrong interpretations. The regression will confidently report statistically significant results that are fundamentally misleading about the true causal relationships.
 
-Your challenge is to explore the simple example below and show how this happens:
+Your challenge is to explore the simple example below and show how this happens. Throughout the discussion we will use the following notation:
 
-$$
-\begin{aligned}
-A &\equiv \textrm{Anxiety Level measured by fMRI activity}\\
-S &\equiv \textrm{Stress Level measured by cortisol level in blood}\\
-T &\equiv \textrm{\# of minutes on social media in last 24 hours}
-\end{aligned}
-$$
+- **A** &mdash; Anxiety level measured by fMRI activity  
+- **S** &mdash; Stress level measured by cortisol level in blood  
+- **T** &mdash; Minutes on social media in the last 24 hours
 
 Let's assume we **know** the relationship among these variables is as follows:
 
-$$
-Anxiety = Stress + 0.1 \times Time
-$$
+`Anxiety = Stress + 0.1 * Time`
 
 ::: {.callout-important}
 ## 🔍 Understanding the True Relationship: Implied Coefficients
 
 **Critical Point:** Students often miss that this specific equation implies specific coefficient values in the generic multiple regression framework.
 
-**The Generic Multiple Regression Equation:**
-$$
-Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon
-$$
+**The Generic Multiple Regression Equation:** `Y = beta_0 + beta_1 * X_1 + beta_2 * X_2 + epsilon`
 
-**In Our Case:**
-$$
-Anxiety = \beta_0 + \beta_1 \times Stress + \beta_2 \times Time + \epsilon
-$$
+**In Our Case:** `Anxiety = beta_0 + beta_1 * Stress + beta_2 * Time + epsilon`
 
 **The True Coefficients (what we "know"):**
 
-- $\beta_0 = 0$ (intercept is zero)
-- $\beta_1 = 1$ (coefficient on Stress is 1)  
-- $\beta_2 = 0.1$ (coefficient on Time is 0.1)
+- beta_0 = 0 (intercept is zero)
+- beta_1 = 1 (coefficient on Stress is 1)  
+- beta_2 = 0.1 (coefficient on Time is 0.1)
 
-**Why This Matters:** When we run regression analysis, we're trying to estimate these $\beta$ coefficients. If our regression gives us coefficients that are very different from these true values, we know our model is wrong—even if it has good statistical fit!
+**Why This Matters:** When we run regression analysis, we're trying to estimate these beta coefficients. If our regression gives us coefficients that are very different from these true values, we know our model is wrong—even if it has good statistical fit!
 :::
 
 ### The Data Generation Process
@@ -270,9 +262,9 @@ When analyzing your multiple regression results, compare them to the **true rela
 
 **True Coefficients:**
 
-- Intercept ($\beta_0$) = 0
-- Stress coefficient ($\beta_1$) = 1  
-- Time coefficient ($\beta_2$) = 0.1
+- Intercept (beta_0) = 0
+- Stress coefficient (beta_1) = 1  
+- Time coefficient (beta_2) = 0.1
 
 **Key Questions:**
 
