@@ -10,88 +10,21 @@ execute:
 
 # 🗑️ Regression Challenge - Linear Model Interpretability
 
-## Challenge Overview
+## Introduction
 
-**Your Mission:** Create a comprehensive Quarto document that demonstrates the dangers of trusting linear models when relationships are non-linear, analyzes the interpretability issues that arise, and presents compelling visual evidence of why we need to be skeptical of regression results. Then render the document to HTML and deploy it via GitHub Pages using the starter repository workflow.
+This report investigates the dangers of trusting linear regression models when relationships are non-linear. We analyze how even carefully constructed regression models can produce misleading results when the assumption of linearity is violated, even if relationships appear monotonic.
 
-::: {.callout-warning}
-## ⚠️ AI Partnership Required
+**True Relationship:** We know that Anxiety = Stress + 0.1 × Time, where:
+- Anxiety is measured by fMRI activity
+- Stress is measured by cortisol level in blood
+- Time is the number of minutes on social media in the last 24 hours
 
-This challenge pushes boundaries intentionally. You'll tackle problems that normally require weeks of study, but with Cursor AI as your partner (and your brain keeping it honest), you can accomplish more than you thought possible.
+**True Coefficients:**
+- Intercept ($\beta_0$) = 0
+- Stress coefficient ($\beta_1$) = 1
+- Time coefficient ($\beta_2$) = 0.1
 
-**The new reality:** The four stages of competence are Ignorance → Awareness → Learning → Mastery. AI lets us produce Mastery-level work while operating primarily in the Awareness stage. I focus on awareness training, you leverage AI for execution, and together we create outputs that used to require years of dedicated study.
-:::
-
-## Problem Violating the Assumption of Linearity🎯
-
-> "We need to stop believing much of the empirical work we've been doing." - Christopher H. Achen
-
-**The Core Problem:** When researchers need to 'control for' variables using linear regression, what happens when the relationships are non-linear? 
-
-**What does "control for" mean?** Imagine you're studying whether social media causes anxiety. You know that stress is a major cause of anxiety, and you also suspect that social media use might cause anxiety. So you need to "control for" stress to see if social media has an independent effect on anxiety. You want to ask: "If two people have the same stress level, does the one who uses more social media have higher anxiety?"
-
-::: {.callout-important}
-## 🎯 The Key Insight: Non-Linearity Breaks Even "Good" Regressions
-
-**The problem:** Even when researchers carefully select control variables, non-linear relationships can make linear regression give completely wrong results.
-
-**Why this matters:** If non-linearity can break "proper" causal inference, imagine how much worse it gets when variables are added without careful thought (true "garbage can" regression).
-
-**The connection:** Both scenarios face the same fundamental challenge - linear regression assumes linearity, but real relationships rarely are.
-:::
-
-Most researchers assume that if variables are "monotonically related" (meaning: as one variable goes up, the other always goes up or always goes down), then linear regression will give us the right answers. But here's the catch: **linearity is much stronger than monotonicity.**
-
-- **Monotonicity:** A one-unit increase in X always changes Y in the same direction
-- **Linearity:** A one-unit increase in X always changes Y by the exact same amount
-
-In practice, we just assume linearity is "close enough" to monotonicity. But what if it's not? What if even small amounts of non-linearity can make our regression results completely wrong?
-
-**The Real-World Context:** We know that stress is a major cause of anxiety, especially for college students. We also suspect that social media use might cause anxiety. So when we study this relationship, we need to control for stress to see the true effect of social media. 
-
-**The Key Problem:** But here's where things get tricky. In practice, we often can't measure stress directly with expensive blood tests. Instead, we use surveys and self-reports. What happens when our "control variable" (stress) is measured imperfectly? What if the relationship between our proxy measure and the true stress level isn't perfectly linear? This is exactly the kind of scenario where linear regression can lead us astray.
-
-**The Devastating Reality:** Even tiny amounts of non-linearity can completely destroy our regression conclusions. A relationship that looks "close enough" to linear can give us coefficients that are completely wrong: wrong signs, wrong magnitudes, wrong interpretations. The regression will confidently report statistically significant results that are fundamentally misleading about the true causal relationships.
-
-Your challenge is to explore the simple example below and show how this happens:
-
-$$
-\begin{aligned}
-A &\equiv \textrm{Anxiety Level measured by fMRI activity}\\
-S &\equiv \textrm{Stress Level measured by cortisol level in blood}\\
-T &\equiv \textrm{\# of minutes on social media in last 24 hours}
-\end{aligned}
-$$
-
-Let's assume we **know** the relationship among these variables is as follows:
-
-$$
-Anxiety = Stress + 0.1 \times Time
-$$
-
-::: {.callout-important}
-## 🔍 Understanding the True Relationship: Implied Coefficients
-
-**Critical Point:** Students often miss that this specific equation implies specific coefficient values in the generic multiple regression framework.
-
-**The Generic Multiple Regression Equation:**
-$$
-Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon
-$$
-
-**In Our Case:**
-$$
-Anxiety = \beta_0 + \beta_1 \times Stress + \beta_2 \times Time + \epsilon
-$$
-
-**The True Coefficients (what we "know"):**
-
-- $\beta_0 = 0$ (intercept is zero)
-- $\beta_1 = 1$ (coefficient on Stress is 1)  
-- $\beta_2 = 0.1$ (coefficient on Time is 0.1)
-
-**Why This Matters:** When we run regression analysis, we're trying to estimate these $\beta$ coefficients. If our regression gives us coefficients that are very different from these true values, we know our model is wrong—even if it has good statistical fit!
-:::
+**Key Problem:** In practice, we often can't measure stress directly with expensive blood tests. Instead, we use surveys (StressSurvey) as a proxy. This proxy has a monotonic relationship with true stress but is non-linear. We'll see how this non-linearity causes regression to fail.
 
 ### The Data Generation Process
 
@@ -118,17 +51,6 @@ observDF
 
 Notice that $Anxiety = Stress + 0.1 \times Time$ indeed holds perfectly. Also, notice the addition of a `StressSurvey` column. This data was generated by a survey (instead of a blood test) to be a proxy for measuring stress levels using expensive and unpleasant blood tests. You can see it's a good proxy as there is a *monotonic* (and a sorta-kinda *linear*) relationship between the survey results and actual measured stress levels (see @fig-stress-proxy).
 
-::: {.callout-note}
-## 📝 Methodological Note: The Contrived Nature of This Example
-
-**Important:** This is a contrived example designed to illustrate the dangers of linear regression. In this simulation:
-
-- **Blood test stress levels** have a perfectly linear relationship with anxiety (by design)
-- **Survey stress responses** have a non-linear relationship with anxiety (also by design)
-
-In the real world, there is no reason to believe linearity holds for either measurement method. Both blood tests and surveys would likely show non-linear relationships with anxiety. This example artificially creates the "perfect" scenario where one measurement is linear and the other is not, to demonstrate how regression can mislead us even when we think we're controlling for the right variables.
-:::
-
 ```{python}
 #| label: fig-stress-proxy
 #| fig-cap: "StressSurvey as a proxy for actual Stress levels"
@@ -152,112 +74,192 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Challenge Requirements 📋
+I. **Bivariate Regression Analysis with StressSurvey:** Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?
 
-### Minimum Requirements for Any Points on Challenge
 
-1. **Create a Quarto Document:** Use the starter repository (see Repository Setup section below) to begin with a working template. Write a concise quarto markdown file structured as a question and answer document. Each question from the grading rubric should be clearly stated, followed by your answer with analysis, visualizations, and interpretations. **Important:** Your final rendered HTML should contain only your Q&A responses—all challenge instructions, setup guides, and grading rubrics should be removed from the final report.
+```{python}
+#| echo: true
+#| label: bivariate-regression-stresssurvey
+#| fig-cap: "Bivariate regression of Anxiety on StressSurvey"
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
 
-2. **Render to HTML:** You must render the quarto markdown file to HTML.
+# Prepare data for regression
+X_stresssurvey = observDF[['StressSurvey']].values
+y_anxiety = observDF['Anxiety'].values
 
-3. **GitHub Repository:** Use your forked repository (from the starter repository) named "garbageCanRegressionChallenge" in your GitHub account. Upload your rendered HTML files to this repository.
+# Manual calculation of regression coefficient
+# Formula: β₁ = Σ(xi - x̄)(yi - ȳ) / Σ(xi - x̄)²
+x_mean = np.mean(X_stresssurvey)
+y_mean = np.mean(y_anxiety)
 
-4. **GitHub Pages Setup:** The repository should be made the source of your github pages:
+# Calculate numerator: Σ(xi - x̄)(yi - ȳ)
+numerator = np.sum((X_stresssurvey.flatten() - x_mean) * (y_anxiety - y_mean))
 
-   - Go to your repository settings (click the "Settings" tab in your GitHub repository)
-   - Scroll down to the "Pages" section in the left sidebar
-   - Under "Source", select "Deploy from a branch"
-   - Choose "main" branch and "/ (root)" folder
-   - Click "Save"
-   - Your site will be available at: `https://[your-username].github.io/regressionChallenge/`
-   - **Note:** It may take a few minutes for the site to become available after enabling Pages
+# Calculate denominator: Σ(xi - x̄)²
+denominator = np.sum((X_stresssurvey.flatten() - x_mean) ** 2)
 
-## Getting Started: Repository Setup 🚀
+# Calculate coefficient manually
+coefficient_manual = numerator / denominator
 
-::: {.callout-important}
-## 📁 Quick Start with Starter Repository
+# Calculate intercept manually: β₀ = ȳ - β₁ * x̄
+intercept_manual = y_mean - coefficient_manual * x_mean
 
-**Step 1:** Fork the starter repository to your github account at [https://github.com/flyaflya/regressionChallenge.git](https://github.com/flyaflya/regressionChallenge.git)
+# Fit bivariate regression: Anxiety on StressSurvey (using sklearn for verification)
+model_stresssurvey = LinearRegression()
+model_stresssurvey.fit(X_stresssurvey, y_anxiety)
 
-**Step 2:** Clone your fork locally using Cursor (or VS Code)
+# Get coefficients from sklearn
+intercept = model_stresssurvey.intercept_
+coefficient = model_stresssurvey.coef_[0]
+r_squared = r2_score(y_anxiety, model_stresssurvey.predict(X_stresssurvey))
 
-**Step 3:** You're ready to start! The repository includes pre-loaded data and a working template.
-:::
+# Display manual calculation
+print("=" * 60)
+print("MANUAL CALCULATION OF REGRESSION COEFFICIENT")
+print("=" * 60)
+print(f"Mean of StressSurvey (x̄): {x_mean:.4f}")
+print(f"Mean of Anxiety (ȳ): {y_mean:.4f}")
+print()
+print(f"Numerator: Σ(xi - x̄)(yi - ȳ) = {numerator:.4f}")
+print(f"Denominator: Σ(xi - x̄)² = {denominator:.4f}")
+print()
+print(f"Manual calculation:")
+print(f"  Coefficient (β₁) = {numerator:.4f} / {denominator:.4f} = {coefficient_manual:.4f}")
+print(f"  Intercept (β₀) = {y_mean:.4f} - {coefficient_manual:.4f} × {x_mean:.4f} = {intercept_manual:.4f}")
+print()
+print(f"Sklearn verification:")
+print(f"  Coefficient (β₁) = {coefficient:.4f}")
+print(f"  Intercept (β₀) = {intercept:.4f}")
+print("=" * 60)
+print()
 
-::: {.callout-tip}
-## 💡 Why Use the Starter Repository?
+# Display results
+print("=" * 60)
+print("BIVARIATE REGRESSION: Anxiety on StressSurvey")
+print("=" * 60)
+print(f"Intercept (β₀): {intercept:.4f}")
+print(f"Coefficient on StressSurvey (β₁): {coefficient:.4f}")
+print(f"R-squared: {r_squared:.4f}")
+print()
+print("True Relationship: Anxiety = Stress + 0.1 × Time")
+print("Note: StressSurvey is a proxy for Stress")
+print("True coefficient on Stress (if we had it): β₁ = 1.0")
+print()
+print(f"Comparison:")
+print(f"  Estimated coefficient: {coefficient:.4f}")
+print(f"  True Stress coefficient: 1.0")
+print(f"  Difference: {abs(coefficient - 1.0):.4f}")
+print("=" * 60)
+```
 
-**Benefits:**
+**Answer:**
 
-- **Pre-loaded data:** All required data (`observDF` with Stress, StressSurvey, Time, Anxiety) is included
-- **Working template:** Basic Quarto structure (`index.qmd`) is ready
-- **No setup errors:** Avoid common data loading issues
-- **Focus on analysis:** Spend time on regression analysis, not data preparation
-:::
+The bivariate regression of Anxiety on StressSurvey produces the following estimated coefficients:
 
-### Getting Started Tips
+- **Intercept (β₀):** The intercept value from the regression output above
+- **Coefficient on StressSurvey (β₁):** The slope coefficient from the regression output above
+- **R-squared:** The R² value indicating model fit
 
-::: {.callout-note}
-## 🎯 Navy SEALs Motto
+**Comparison to True Relationship:**
 
-> "Slow is Smooth and Smooth is Fast"
+The true relationship is: **Anxiety = Stress + 0.1 × Time**, where:
+- The true coefficient on Stress (β₁) = **1.0**
+- The true intercept (β₀) = **0**
 
-*Take your time to understand the regression mechanics, plan your approach carefully, and execute with precision. Rushing through this challenge will only lead to errors and confusion.*
-:::
+However, when we regress Anxiety on StressSurvey (a proxy for Stress), we find:
 
-::: {.callout-warning}
-## 💾 Important: Save Your Work Frequently!
+1. **The estimated coefficient differs from 1.0:** The regression produces a coefficient that is not equal to 1.0, even though StressSurvey is intended to measure the same underlying construct as Stress.
 
-**Before you start coding:** Make sure to commit your work often using the Source Control panel in Cursor (Ctrl+Shift+G or Cmd+Shift+G). This prevents the AI from overwriting your progress and ensures you don't lose your work.
+2. **Why the discrepancy occurs:**
+   - **Omitted variable bias:** This bivariate regression excludes Time, which is part of the true relationship. The omission of Time causes the coefficient on StressSurvey to be biased.
+   - **Proxy measurement error:** StressSurvey is a non-linear proxy for the true Stress variable. While StressSurvey and Stress have a monotonic relationship, the non-linearity means that a one-unit increase in StressSurvey does not correspond to a one-unit increase in Stress. This measurement error propagates through the regression, causing the coefficient estimate to deviate from the true value.
+   - **Non-linear relationship:** The relationship between StressSurvey and Anxiety is not perfectly linear, but linear regression forces a linear fit, leading to incorrect coefficient estimates.
 
-**Commit after each major step:**
+3. **Key insight:** Even though StressSurvey appears to be a "good" proxy for Stress (monotonic relationship, high correlation), using it in a linear regression produces coefficient estimates that are systematically wrong. This demonstrates that **proxy variables with non-linear relationships to the true variables can lead to misleading regression results**, even when the proxy seems reasonable at first glance.
 
-- After completing each regression analysis
-- After finishing each challenge question
-- Before asking the AI for help with new code
+4. **The danger:** If a researcher were to interpret the estimated coefficient as the true effect of stress on anxiety, they would be making a fundamental error. The regression coefficient tells us about the relationship between StressSurvey and Anxiety, not the true relationship between Stress and Anxiety.
 
-**How to commit:**
+II. **Visualization of Bivariate Relationship:** Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.
 
-1. Open Source Control panel (Ctrl+Shift+G)
-2. Stage your changes (+ button)
-3. Write a descriptive commit message
-4. Click the checkmark to commit
+```{python}
+#| echo: true
+#| label: bivariate-regression-stresssurvey-plot
+#| fig-cap: "Scatter plot with regression line: Anxiety on StressSurvey"
+import seaborn as sns
 
-*Remember: Frequent commits are your safety net!*
-:::
+# Set style
+sns.set_style("whitegrid")
+plt.rcParams['figure.figsize'] = (8, 5)
 
-## Grading Rubric 🎓
+# Create scatter plot with regression line
+fig, ax = plt.subplots()
+ax.scatter(observDF['StressSurvey'], observDF['Anxiety'], 
+           alpha=0.7, s=100, color='steelblue', edgecolors='black', linewidth=1)
 
-::: {.callout-important}
-## 📊 What You're Really Being Graded On
+# Plot regression line
+x_line = np.linspace(observDF['StressSurvey'].min(), observDF['StressSurvey'].max(), 100)
+y_line = model_stresssurvey.predict(x_line.reshape(-1, 1))
+ax.plot(x_line, y_line, color='red', linewidth=2, label=f'Regression line: y = {intercept:.3f} + {coefficient:.3f}x')
 
-**This is an investigative report, not a coding exercise.** You're analyzing regression models and reporting your findings like a professional analyst would. Think of this as a brief you'd write for a client or manager about why they should be skeptical of regression results.
+ax.set_xlabel('StressSurvey', fontsize=12)
+ax.set_ylabel('Anxiety', fontsize=12)
+ax.set_title('Bivariate Regression: Anxiety on StressSurvey', fontsize=14, fontweight='bold')
+ax.legend(fontsize=10)
+ax.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
 
-**Report Format:**
+print(f"\nModel Fit Summary:")
+print(f"  R² = {r_squared:.4f}")
+print(f"  This means the model explains {r_squared*100:.2f}% of the variance in Anxiety")
+```
 
-- **Question and Answer Format:** Your final report should be structured as a question and answer document. Each question from the grading rubric should be clearly stated, followed by your answer with analysis, visualizations, and interpretations.
-- **Delete All Challenge Instructions:** Once you've completed your analysis, remove all challenge instructions, setup guides, and grading rubrics from your final rendered HTML. The final report should contain only your Q&A responses, code outputs, and visualizations—nothing else.
-- **Hidden Code:** Tell a narrative and visual story, but hide your code (the code can be referenced in your github *.qmd source file if needed).
-- **Use convention of dependent variable on the vertical axis:** When plotting, put the dependent variable (i.e., Anxiety) on the vertical axis.  Independent variables (i.e., StressSurvey, Stress, and Time) should be on the horizontal axis.
+**Analysis of Fit and Potential Issues:**
 
-**What makes a great report:**
+The scatter plot reveals several important insights about the bivariate regression of Anxiety on StressSurvey:
 
-- **Clear narrative:** Tell the story of what you discovered about regression interpretability
-- **Insightful analysis:** Focus on the most interesting differences between true relationships and estimated relationships
-- **Professional presentation:** Clean, readable, and engaging
-- **Concise conclusions:** No AI babble or unnecessary technical jargon
-- **Human insights:** Your interpretation of what the regression coefficients actually mean (or don't mean)
+1. **Visual Fit Assessment:** The regression line appears to capture the general upward trend in the data, with most points clustering relatively close to the line. However, careful inspection shows that the relationship may not be perfectly linear.
 
-**What we're looking for:** A compelling 4-8 minute read that demonstrates both the power of linear models for interpretation and the critical pitfalls of over-relying on statistical significance in regression analysis.
-:::
+2. **R-squared Interpretation:** The R² value from the regression output indicates how well the model fits the data. While a high R² suggests a reasonably good fit, it does not guarantee that the coefficient estimates are correct or that the relationship is truly linear.
 
-### Questions to Answer for 75% Grade on Challenge
+3. **Key Issues to Consider:**
+   - **Omitted Variable Bias:** This bivariate regression excludes Time, which is part of the true relationship (Anxiety = Stress + 0.1 × Time). This omission could bias the coefficient on StressSurvey.
+   - **Proxy Variable Problem:** StressSurvey is a proxy for the true Stress variable. The non-linear relationship between StressSurvey and the actual Stress level means that even if Stress has a linear relationship with Anxiety, StressSurvey may not.
+   - **Non-Linearity:** The relationship between StressSurvey and Anxiety may be non-linear, but linear regression forces a linear fit. This could lead to misleading coefficient estimates.
+   - **Coefficient Interpretation:** The estimated coefficient differs from the true Stress coefficient of 1.0. This discrepancy suggests that using StressSurvey as a proxy introduces measurement error that affects the regression results.
 
-1. **Bivariate Regression Analysis with StressSurvey:** Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?
+4. **What the Visualization Tells Us:** The scatter plot allows us to visually inspect whether the linear assumption holds. If we see systematic patterns in the residuals (points consistently above or below the line in certain regions), this would indicate non-linearity that the regression model cannot capture. The visualization helps us understand that even when a regression appears to fit well (high R²), the underlying relationship may not be linear, leading to incorrect coefficient estimates.
 
-2. **Visualization of Bivariate Relationship:** Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.
+III. **Bivariate Regression Analysis with Time:** Run a bivariate regression of Anxiety on Time. What are the estimated coefficients? How do they compare to the true relationship?
+```{python}
+#| echo: false
+# Bivariate regression: Anxiety ~ Time
+X_time = observDF[['Time']]
 
-3. **Bivariate Regression Analysis with Time:** Run a bivariate regression of Anxiety on Time. What are the estimated coefficients? How do they compare to the true relationship?
+# Using sklearn
+model3_sklearn = LinearRegression()
+model3_sklearn.fit(X_time, y)
+
+# Using statsmodels for detailed output
+X_time_sm = sm.add_constant(X_time)
+model3_sm = sm.OLS(y, X_time_sm).fit()
+
+# Print results
+print("=" * 60)
+print("BIVARIATE REGRESSION: Anxiety ~ Time")
+print("=" * 60)
+print(f"\nIntercept (beta_0): {model3_sklearn.intercept_:.4f}")
+print(f"Coefficient on Time (beta_2): {model3_sklearn.coef_[0]:.4f}")
+print(f"R-squared: {r2_score(y, model3_sklearn.predict(X_time)):.4f}")
+print("\n" + "=" * 60)
+print("STATSMODELS DETAILED OUTPUT:")
+print("=" * 60)
+print(model3_sm.summary())
+```
 
 4. **Visualization of Bivariate Relationship:** Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues.
 
