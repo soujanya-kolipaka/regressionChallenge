@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,18 +58,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="index_files/libs/clipboard/clipboard.min.js"></script>
 <script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="index_files/libs/quarto-html/popper.min.js"></script>
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<link href="index_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -87,7 +88,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -133,109 +134,27 @@ window.Quarto = {
 
 <section id="regression-challenge---linear-model-interpretability" class="level1">
 <h1>🗑️ Regression Challenge - Linear Model Interpretability</h1>
-<section id="challenge-overview" class="level2">
-<h2 class="anchored" data-anchor-id="challenge-overview">Challenge Overview</h2>
-<p><strong>Your Mission:</strong> Create a comprehensive Quarto document that demonstrates the dangers of trusting linear models when relationships are non-linear, analyzes the interpretability issues that arise, and presents compelling visual evidence of why we need to be skeptical of regression results. Then render the document to HTML and deploy it via GitHub Pages using the starter repository workflow.</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-⚠️ AI Partnership Required
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This challenge pushes boundaries intentionally. You’ll tackle problems that normally require weeks of study, but with Cursor AI as your partner (and your brain keeping it honest), you can accomplish more than you thought possible.</p>
-<p><strong>The new reality:</strong> The four stages of competence are Ignorance → Awareness → Learning → Mastery. AI lets us produce Mastery-level work while operating primarily in the Awareness stage. I focus on awareness training, you leverage AI for execution, and together we create outputs that used to require years of dedicated study.</p>
-</div>
-</div>
-</section>
-<section id="problem-violating-the-assumption-of-linearity" class="level2">
-<h2 class="anchored" data-anchor-id="problem-violating-the-assumption-of-linearity">Problem Violating the Assumption of Linearity🎯</h2>
-<blockquote class="blockquote">
-<p>“We need to stop believing much of the empirical work we’ve been doing.” - Christopher H. Achen</p>
-</blockquote>
-<p><strong>The Core Problem:</strong> When researchers need to ‘control for’ variables using linear regression, what happens when the relationships are non-linear?</p>
-<p><strong>What does “control for” mean?</strong> Imagine you’re studying whether social media causes anxiety. You know that stress is a major cause of anxiety, and you also suspect that social media use might cause anxiety. So you need to “control for” stress to see if social media has an independent effect on anxiety. You want to ask: “If two people have the same stress level, does the one who uses more social media have higher anxiety?”</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-🎯 The Key Insight: Non-Linearity Breaks Even “Good” Regressions
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>The problem:</strong> Even when researchers carefully select control variables, non-linear relationships can make linear regression give completely wrong results.</p>
-<p><strong>Why this matters:</strong> If non-linearity can break “proper” causal inference, imagine how much worse it gets when variables are added without careful thought (true “garbage can” regression).</p>
-<p><strong>The connection:</strong> Both scenarios face the same fundamental challenge - linear regression assumes linearity, but real relationships rarely are.</p>
-</div>
-</div>
-<p>Most researchers assume that if variables are “monotonically related” (meaning: as one variable goes up, the other always goes up or always goes down), then linear regression will give us the right answers. But here’s the catch: <strong>linearity is much stronger than monotonicity.</strong></p>
-<ul>
-<li><strong>Monotonicity:</strong> A one-unit increase in X always changes Y in the same direction</li>
-<li><strong>Linearity:</strong> A one-unit increase in X always changes Y by the exact same amount</li>
-</ul>
-<p>In practice, we just assume linearity is “close enough” to monotonicity. But what if it’s not? What if even small amounts of non-linearity can make our regression results completely wrong?</p>
-<p><strong>The Real-World Context:</strong> We know that stress is a major cause of anxiety, especially for college students. We also suspect that social media use might cause anxiety. So when we study this relationship, we need to control for stress to see the true effect of social media.</p>
-<p><strong>The Key Problem:</strong> But here’s where things get tricky. In practice, we often can’t measure stress directly with expensive blood tests. Instead, we use surveys and self-reports. What happens when our “control variable” (stress) is measured imperfectly? What if the relationship between our proxy measure and the true stress level isn’t perfectly linear? This is exactly the kind of scenario where linear regression can lead us astray.</p>
-<p><strong>The Devastating Reality:</strong> Even tiny amounts of non-linearity can completely destroy our regression conclusions. A relationship that looks “close enough” to linear can give us coefficients that are completely wrong: wrong signs, wrong magnitudes, wrong interpretations. The regression will confidently report statistically significant results that are fundamentally misleading about the true causal relationships.</p>
-<p>Your challenge is to explore the simple example below and show how this happens:</p>
-<p><span class="math display">\[
-\begin{aligned}
-A &amp;\equiv \textrm{Anxiety Level measured by fMRI activity}\\
-S &amp;\equiv \textrm{Stress Level measured by cortisol level in blood}\\
-T &amp;\equiv \textrm{\# of minutes on social media in last 24 hours}
-\end{aligned}
-\]</span></p>
-<p>Let’s assume we <strong>know</strong> the relationship among these variables is as follows:</p>
-<p><span class="math display">\[
-Anxiety = Stress + 0.1 \times Time
-\]</span></p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-🔍 Understanding the True Relationship: Implied Coefficients
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Critical Point:</strong> Students often miss that this specific equation implies specific coefficient values in the generic multiple regression framework.</p>
-<p><strong>The Generic Multiple Regression Equation:</strong> <span class="math display">\[
-Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon
-\]</span></p>
-<p><strong>In Our Case:</strong> <span class="math display">\[
-Anxiety = \beta_0 + \beta_1 \times Stress + \beta_2 \times Time + \epsilon
-\]</span></p>
-<p><strong>The True Coefficients (what we “know”):</strong></p>
-<ul>
-<li><span class="math inline">\(\beta_0 = 0\)</span> (intercept is zero)</li>
-<li><span class="math inline">\(\beta_1 = 1\)</span> (coefficient on Stress is 1)<br>
-</li>
-<li><span class="math inline">\(\beta_2 = 0.1\)</span> (coefficient on Time is 0.1)</li>
-</ul>
-<p><strong>Why This Matters:</strong> When we run regression analysis, we’re trying to estimate these <span class="math inline">\(\beta\)</span> coefficients. If our regression gives us coefficients that are very different from these true values, we know our model is wrong—even if it has good statistical fit!</p>
-</div>
-</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This report investigates the dangers of trusting linear regression models when relationships are non-linear. We analyze how even carefully constructed regression models can produce misleading results when the assumption of linearity is violated, even if relationships appear monotonic.</p>
+<p><strong>True Relationship:</strong> We know that Anxiety = Stress + 0.1 × Time, where: - Anxiety is measured by fMRI activity - Stress is measured by cortisol level in blood - Time is the number of minutes on social media in the last 24 hours</p>
+<p><strong>True Coefficients:</strong> - Intercept (<span class="math inline">\(\beta_0\)</span>) = 0 - Stress coefficient (<span class="math inline">\(\beta_1\)</span>) = 1 - Time coefficient (<span class="math inline">\(\beta_2\)</span>) = 0.1</p>
+<p><strong>Key Problem:</strong> In practice, we often can’t measure stress directly with expensive blood tests. Instead, we use surveys (StressSurvey) as a proxy. This proxy has a monotonic relationship with true stress but is non-linear. We’ll see how this non-linearity causes regression to fail.</p>
 <section id="the-data-generation-process" class="level3">
 <h3 class="anchored" data-anchor-id="the-data-generation-process">The Data Generation Process</h3>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>observDF</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>observDF</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div id="tbl-observations" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-observations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Observed data with known true relationships
 </figcaption>
 <div aria-describedby="tbl-observations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <div>
 
 
-<table class="dataframe do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe do-not-create-environment cell caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -247,105 +166,105 @@ Table&nbsp;1: Observed data with known true relationships
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0</td>
 <td>0</td>
 <td>0.0</td>
 <td>0.00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>0</td>
 <td>0</td>
 <td>1.0</td>
 <td>0.10</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>0</td>
 <td>0</td>
 <td>1.0</td>
 <td>0.10</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>1</td>
 <td>3</td>
 <td>1.0</td>
 <td>1.10</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>1</td>
 <td>3</td>
 <td>1.0</td>
 <td>1.10</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5</td>
+<th data-quarto-table-cell-role="th">5</th>
 <td>1</td>
 <td>3</td>
 <td>1.0</td>
 <td>1.10</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">6</td>
+<th data-quarto-table-cell-role="th">6</th>
 <td>2</td>
 <td>6</td>
 <td>2.0</td>
 <td>2.20</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">7</td>
+<th data-quarto-table-cell-role="th">7</th>
 <td>2</td>
 <td>6</td>
 <td>2.0</td>
 <td>2.20</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">8</td>
+<th data-quarto-table-cell-role="th">8</th>
 <td>2</td>
 <td>6</td>
 <td>2.0</td>
 <td>2.20</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
+<th data-quarto-table-cell-role="th">9</th>
 <td>8</td>
 <td>9</td>
 <td>2.0</td>
 <td>8.20</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">10</td>
+<th data-quarto-table-cell-role="th">10</th>
 <td>8</td>
 <td>9</td>
 <td>2.0</td>
 <td>8.20</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">11</td>
+<th data-quarto-table-cell-role="th">11</th>
 <td>8</td>
 <td>9</td>
 <td>2.1</td>
 <td>8.21</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">12</td>
+<th data-quarto-table-cell-role="th">12</th>
 <td>12</td>
 <td>12</td>
 <td>2.2</td>
 <td>12.22</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">13</td>
+<th data-quarto-table-cell-role="th">13</th>
 <td>12</td>
 <td>12</td>
 <td>2.2</td>
 <td>12.22</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">14</td>
+<th data-quarto-table-cell-role="th">14</th>
 <td>12</td>
 <td>12</td>
 <td>2.2</td>
@@ -361,42 +280,7 @@ Table&nbsp;1: Observed data with known true relationships
 </div>
 </div>
 <p>Notice that <span class="math inline">\(Anxiety = Stress + 0.1 \times Time\)</span> indeed holds perfectly. Also, notice the addition of a <code>StressSurvey</code> column. This data was generated by a survey (instead of a blood test) to be a proxy for measuring stress levels using expensive and unpleasant blood tests. You can see it’s a good proxy as there is a <em>monotonic</em> (and a sorta-kinda <em>linear</em>) relationship between the survey results and actual measured stress levels (see <a href="#fig-stress-proxy" class="quarto-xref">Figure&nbsp;1</a>).</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-📝 Methodological Note: The Contrived Nature of This Example
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Important:</strong> This is a contrived example designed to illustrate the dangers of linear regression. In this simulation:</p>
-<ul>
-<li><strong>Blood test stress levels</strong> have a perfectly linear relationship with anxiety (by design)</li>
-<li><strong>Survey stress responses</strong> have a non-linear relationship with anxiety (also by design)</li>
-</ul>
-<p>In the real world, there is no reason to believe linearity holds for either measurement method. Both blood tests and surveys would likely show non-linear relationships with anxiety. This example artificially creates the “perfect” scenario where one measurement is linear and the other is not, to demonstrate how regression can mislead us even when we think we’re controlling for the right variables.</p>
-</div>
-</div>
 <div id="cell-fig-stress-proxy" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set style</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">"whitegrid"</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.figsize'</span>] <span class="op">=</span> (<span class="dv">7</span>, <span class="dv">4</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>ax.plot(observDF[<span class="st">'Stress'</span>], observDF[<span class="st">'StressSurvey'</span>], </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'purple'</span>, marker<span class="op">=</span><span class="st">'o'</span>, markersize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"StressSurvey seems a decent (monotonic) proxy for actual Stress"</span>)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Actual Stress Level"</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Stress Survey Response"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-stress-proxy" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -410,204 +294,396 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="challenge-requirements" class="level2">
-<h2 class="anchored" data-anchor-id="challenge-requirements">Challenge Requirements 📋</h2>
-<section id="minimum-requirements-for-any-points-on-challenge" class="level3">
-<h3 class="anchored" data-anchor-id="minimum-requirements-for-any-points-on-challenge">Minimum Requirements for Any Points on Challenge</h3>
-<ol type="1">
-<li><p><strong>Create a Quarto Document:</strong> Use the starter repository (see Repository Setup section below) to begin with a working template. Write a concise quarto markdown file structured as a question and answer document. Each question from the grading rubric should be clearly stated, followed by your answer with analysis, visualizations, and interpretations. <strong>Important:</strong> Your final rendered HTML should contain only your Q&amp;A responses—all challenge instructions, setup guides, and grading rubrics should be removed from the final report.</p></li>
-<li><p><strong>Render to HTML:</strong> You must render the quarto markdown file to HTML.</p></li>
-<li><p><strong>GitHub Repository:</strong> Use your forked repository (from the starter repository) named “garbageCanRegressionChallenge” in your GitHub account. Upload your rendered HTML files to this repository.</p></li>
-<li><p><strong>GitHub Pages Setup:</strong> The repository should be made the source of your github pages:</p>
+<p>I. <strong>Bivariate Regression Analysis with StressSurvey:</strong> Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?</p>
+<div id="bivariate-regression-stresssurvey" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================
+MANUAL CALCULATION OF REGRESSION COEFFICIENT
+============================================================
+Mean of StressSurvey (x̄): 6.0000
+Mean of Anxiety (ȳ): 4.7580
+
+Numerator: Σ(xi - x̄)(yi - ȳ) = 282.6900
+Denominator: Σ(xi - x̄)² = 270.0000
+
+Manual calculation:
+  Coefficient (β₁) = 282.6900 / 270.0000 = 1.0470
+  Intercept (β₀) = 4.7580 - 1.0470 × 6.0000 = -1.5240
+
+Sklearn verification:
+  Coefficient (β₁) = 1.0470
+  Intercept (β₀) = -1.5240
+============================================================
+
+============================================================
+BIVARIATE REGRESSION: Anxiety on StressSurvey
+============================================================
+Intercept (β₀): -1.5240
+Coefficient on StressSurvey (β₁): 1.0470
+R-squared: 0.9011
+
+True Relationship: Anxiety = Stress + 0.1 × Time
+Note: StressSurvey is a proxy for Stress
+True coefficient on Stress (if we had it): β₁ = 1.0
+
+Comparison:
+  Estimated coefficient: 1.0470
+  True Stress coefficient: 1.0
+  Difference: 0.0470
+============================================================</code></pre>
+</div>
+</div>
+<p><strong>Answer:</strong></p>
+<p>The bivariate regression of Anxiety on StressSurvey produces the following estimated coefficients:</p>
 <ul>
-<li>Go to your repository settings (click the “Settings” tab in your GitHub repository)</li>
-<li>Scroll down to the “Pages” section in the left sidebar</li>
-<li>Under “Source”, select “Deploy from a branch”</li>
-<li>Choose “main” branch and “/ (root)” folder</li>
-<li>Click “Save”</li>
-<li>Your site will be available at: <code>https://[your-username].github.io/regressionChallenge/</code></li>
-<li><strong>Note:</strong> It may take a few minutes for the site to become available after enabling Pages</li>
+<li><strong>Intercept (β₀):</strong> The intercept value from the regression output above</li>
+<li><strong>Coefficient on StressSurvey (β₁):</strong> The slope coefficient from the regression output above</li>
+<li><strong>R-squared:</strong> The R² value indicating model fit</li>
+</ul>
+<p><strong>Comparison to True Relationship:</strong></p>
+<p>The true relationship is: <strong>Anxiety = Stress + 0.1 × Time</strong>, where: - The true coefficient on Stress (β₁) = <strong>1.0</strong> - The true intercept (β₀) = <strong>0</strong></p>
+<p>However, when we regress Anxiety on StressSurvey (a proxy for Stress), we find:</p>
+<ol type="1">
+<li><p><strong>The estimated coefficient differs from 1.0:</strong> The regression produces a coefficient that is not equal to 1.0, even though StressSurvey is intended to measure the same underlying construct as Stress.</p></li>
+<li><p><strong>Why the discrepancy occurs:</strong></p>
+<ul>
+<li><strong>Omitted variable bias:</strong> This bivariate regression excludes Time, which is part of the true relationship. The omission of Time causes the coefficient on StressSurvey to be biased.</li>
+<li><strong>Proxy measurement error:</strong> StressSurvey is a non-linear proxy for the true Stress variable. While StressSurvey and Stress have a monotonic relationship, the non-linearity means that a one-unit increase in StressSurvey does not correspond to a one-unit increase in Stress. This measurement error propagates through the regression, causing the coefficient estimate to deviate from the true value.</li>
+<li><strong>Non-linear relationship:</strong> The relationship between StressSurvey and Anxiety is not perfectly linear, but linear regression forces a linear fit, leading to incorrect coefficient estimates.</li>
 </ul></li>
+<li><p><strong>Key insight:</strong> Even though StressSurvey appears to be a “good” proxy for Stress (monotonic relationship, high correlation), using it in a linear regression produces coefficient estimates that are systematically wrong. This demonstrates that <strong>proxy variables with non-linear relationships to the true variables can lead to misleading regression results</strong>, even when the proxy seems reasonable at first glance.</p></li>
+<li><p><strong>The danger:</strong> If a researcher were to interpret the estimated coefficient as the true effect of stress on anxiety, they would be making a fundamental error. The regression coefficient tells us about the relationship between StressSurvey and Anxiety, not the true relationship between Stress and Anxiety.</p></li>
 </ol>
-</section>
-</section>
-<section id="getting-started-repository-setup" class="level2">
-<h2 class="anchored" data-anchor-id="getting-started-repository-setup">Getting Started: Repository Setup 🚀</h2>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-📁 Quick Start with Starter Repository
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Step 1:</strong> Fork the starter repository to your github account at <a href="https://github.com/flyaflya/regressionChallenge.git">https://github.com/flyaflya/regressionChallenge.git</a></p>
-<p><strong>Step 2:</strong> Clone your fork locally using Cursor (or VS Code)</p>
-<p><strong>Step 3:</strong> You’re ready to start! The repository includes pre-loaded data and a working template.</p>
+<ol start="2" type="I">
+<li><strong>Visualization of Bivariate Relationship:</strong> Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.</li>
+</ol>
+<div id="cell-bivariate-regression-stresssurvey-plot" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="bivariate-regression-stresssurvey-plot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/bivariate-regression-stresssurvey-plot-output-1.png" width="758" height="469" class="figure-img"></p>
+<figcaption>Scatter plot with regression line: Anxiety on StressSurvey</figcaption>
+</figure>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-💡 Why Use the Starter Repository?
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model Fit Summary:
+  R² = 0.9011
+  This means the model explains 90.11% of the variance in Anxiety</code></pre>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p><strong>Benefits:</strong></p>
-<ul>
-<li><strong>Pre-loaded data:</strong> All required data (<code>observDF</code> with Stress, StressSurvey, Time, Anxiety) is included</li>
-<li><strong>Working template:</strong> Basic Quarto structure (<code>index.qmd</code>) is ready</li>
-<li><strong>No setup errors:</strong> Avoid common data loading issues</li>
-<li><strong>Focus on analysis:</strong> Spend time on regression analysis, not data preparation</li>
-</ul>
-</div>
-</div>
-<section id="getting-started-tips" class="level3">
-<h3 class="anchored" data-anchor-id="getting-started-tips">Getting Started Tips</h3>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-🎯 Navy SEALs Motto
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<blockquote class="blockquote">
-<p>“Slow is Smooth and Smooth is Fast”</p>
-</blockquote>
-<p><em>Take your time to understand the regression mechanics, plan your approach carefully, and execute with precision. Rushing through this challenge will only lead to errors and confusion.</em></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-💾 Important: Save Your Work Frequently!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>Before you start coding:</strong> Make sure to commit your work often using the Source Control panel in Cursor (Ctrl+Shift+G or Cmd+Shift+G). This prevents the AI from overwriting your progress and ensures you don’t lose your work.</p>
-<p><strong>Commit after each major step:</strong></p>
-<ul>
-<li>After completing each regression analysis</li>
-<li>After finishing each challenge question</li>
-<li>Before asking the AI for help with new code</li>
-</ul>
-<p><strong>How to commit:</strong></p>
+<p><strong>Analysis of Fit and Potential Issues:</strong></p>
+<p>The scatter plot reveals several important insights about the bivariate regression of Anxiety on StressSurvey:</p>
 <ol type="1">
-<li>Open Source Control panel (Ctrl+Shift+G)</li>
-<li>Stage your changes (+ button)</li>
-<li>Write a descriptive commit message</li>
-<li>Click the checkmark to commit</li>
+<li><p><strong>Visual Fit Assessment:</strong> The regression line appears to capture the general upward trend in the data, with most points clustering relatively close to the line. However, careful inspection shows that the relationship may not be perfectly linear.</p></li>
+<li><p><strong>R-squared Interpretation:</strong> The R² value from the regression output indicates how well the model fits the data. While a high R² suggests a reasonably good fit, it does not guarantee that the coefficient estimates are correct or that the relationship is truly linear.</p></li>
+<li><p><strong>Key Issues to Consider:</strong></p>
+<ul>
+<li><strong>Omitted Variable Bias:</strong> This bivariate regression excludes Time, which is part of the true relationship (Anxiety = Stress + 0.1 × Time). This omission could bias the coefficient on StressSurvey.</li>
+<li><strong>Proxy Variable Problem:</strong> StressSurvey is a proxy for the true Stress variable. The non-linear relationship between StressSurvey and the actual Stress level means that even if Stress has a linear relationship with Anxiety, StressSurvey may not.</li>
+<li><strong>Non-Linearity:</strong> The relationship between StressSurvey and Anxiety may be non-linear, but linear regression forces a linear fit. This could lead to misleading coefficient estimates.</li>
+<li><strong>Coefficient Interpretation:</strong> The estimated coefficient differs from the true Stress coefficient of 1.0. This discrepancy suggests that using StressSurvey as a proxy introduces measurement error that affects the regression results.</li>
+</ul></li>
+<li><p><strong>What the Visualization Tells Us:</strong> The scatter plot allows us to visually inspect whether the linear assumption holds. If we see systematic patterns in the residuals (points consistently above or below the line in certain regions), this would indicate non-linearity that the regression model cannot capture. The visualization helps us understand that even when a regression appears to fit well (high R²), the underlying relationship may not be linear, leading to incorrect coefficient estimates.</p></li>
 </ol>
-<p><em>Remember: Frequent commits are your safety net!</em></p>
+<ol start="3" type="I">
+<li><strong>Bivariate Regression Analysis with Time:</strong> Run a bivariate regression of Anxiety on Time. What are the estimated coefficients? How do they compare to the true relationship?</li>
+</ol>
+<div id="85fdfa38" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================
+BIVARIATE REGRESSION: Anxiety ~ Time
+============================================================
+
+Intercept (beta_0): -3.6801
+Coefficient on Time (beta_2): 5.3406
+R-squared: 0.5630
+
+============================================================
+STATSMODELS DETAILED OUTPUT:
+============================================================
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.563
+Model:                            OLS   Adj. R-squared:                  0.529
+Method:                 Least Squares   F-statistic:                     16.75
+Date:                Tue, 11 Nov 2025   Prob (F-statistic):            0.00127
+Time:                        21:46:09   Log-Likelihood:                -38.223
+No. Observations:                  15   AIC:                             80.45
+Df Residuals:                      13   BIC:                             81.86
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -3.6801      2.233     -1.648      0.123      -8.504       1.144
+Time           5.3406      1.305      4.093      0.001       2.522       8.160
+==============================================================================
+Omnibus:                        1.026   Durbin-Watson:                   0.661
+Prob(Omnibus):                  0.599   Jarque-Bera (JB):                0.749
+Skew:                          -0.162   Prob(JB):                        0.688
+Kurtosis:                       1.955   Cond. No.                         5.80
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
 </div>
 </div>
-</section>
-</section>
-<section id="grading-rubric" class="level2">
-<h2 class="anchored" data-anchor-id="grading-rubric">Grading Rubric 🎓</h2>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-📊 What You’re Really Being Graded On
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><strong>This is an investigative report, not a coding exercise.</strong> You’re analyzing regression models and reporting your findings like a professional analyst would. Think of this as a brief you’d write for a client or manager about why they should be skeptical of regression results.</p>
-<p><strong>Report Format:</strong></p>
-<ul>
-<li><strong>Question and Answer Format:</strong> Your final report should be structured as a question and answer document. Each question from the grading rubric should be clearly stated, followed by your answer with analysis, visualizations, and interpretations.</li>
-<li><strong>Delete All Challenge Instructions:</strong> Once you’ve completed your analysis, remove all challenge instructions, setup guides, and grading rubrics from your final rendered HTML. The final report should contain only your Q&amp;A responses, code outputs, and visualizations—nothing else.</li>
-<li><strong>Hidden Code:</strong> Tell a narrative and visual story, but hide your code (the code can be referenced in your github *.qmd source file if needed).</li>
-<li><strong>Use convention of dependent variable on the vertical axis:</strong> When plotting, put the dependent variable (i.e., Anxiety) on the vertical axis. Independent variables (i.e., StressSurvey, Stress, and Time) should be on the horizontal axis.</li>
-</ul>
-<p><strong>What makes a great report:</strong></p>
-<ul>
-<li><strong>Clear narrative:</strong> Tell the story of what you discovered about regression interpretability</li>
-<li><strong>Insightful analysis:</strong> Focus on the most interesting differences between true relationships and estimated relationships</li>
-<li><strong>Professional presentation:</strong> Clean, readable, and engaging</li>
-<li><strong>Concise conclusions:</strong> No AI babble or unnecessary technical jargon</li>
-<li><strong>Human insights:</strong> Your interpretation of what the regression coefficients actually mean (or don’t mean)</li>
-</ul>
-<p><strong>What we’re looking for:</strong> A compelling 4-8 minute read that demonstrates both the power of linear models for interpretation and the critical pitfalls of over-relying on statistical significance in regression analysis.</p>
-</div>
-</div>
-<section id="questions-to-answer-for-75-grade-on-challenge" class="level3">
-<h3 class="anchored" data-anchor-id="questions-to-answer-for-75-grade-on-challenge">Questions to Answer for 75% Grade on Challenge</h3>
+<p><strong>Answer:</strong> Bivariate regression of Anxiety ~ Time gives an intercept around -3.68 and a slope on Time about 5.34, with R² ≈ 0.56. The true data-generating process only assigns 0.1 to Time, so this single-variable regression wildly overstates the time effect. The distortion comes from omitted-variable bias: stress drives both anxiety and time in the dataset, and once you leave stress out, the regression loads that shared variation onto Time, yielding the misleading 5.34 estimate.</p>
+<p><strong>Comparison to True Relationship:</strong></p>
+<p>The true relationship is: <strong>Anxiety = Stress + 0.1 × Time</strong>, where: - The true coefficient on Time (beta_2) = <strong>0.1</strong> - The true intercept (beta_0) = <strong>0</strong></p>
+<p>However, when we regress Anxiety on Time, we find:</p>
 <ol type="1">
-<li><p><strong>Bivariate Regression Analysis with StressSurvey:</strong> Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?</p></li>
-<li><p><strong>Visualization of Bivariate Relationship:</strong> Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.</p></li>
-<li><p><strong>Bivariate Regression Analysis with Time:</strong> Run a bivariate regression of Anxiety on Time. What are the estimated coefficients? How do they compare to the true relationship?</p></li>
-<li><p><strong>Visualization of Bivariate Relationship:</strong> Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues.</p></li>
-<li><p><strong>Multiple Regression Analysis:</strong> Run a multiple regression of Anxiety on both <strong>StressSurvey</strong> and Time. What are the estimated coefficients? How do they compare to the true relationship?</p></li>
-</ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-🎯 Remember the True Coefficients!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>When analyzing your multiple regression results, compare them to the <strong>true relationship</strong> we established:</p>
-<p><strong>True Coefficients:</strong></p>
+<li><p><strong>The estimated coefficient differs from 0.1:</strong> The regression produces a coefficient that is not equal to 0.1, even though Time is part of the true relationship.</p></li>
+<li><p><strong>Why the discrepancy occurs:</strong></p>
 <ul>
-<li>Intercept (<span class="math inline">\(\beta_0\)</span>) = 0</li>
-<li>Stress coefficient (<span class="math inline">\(\beta_1\)</span>) = 1<br>
-</li>
-<li>Time coefficient (<span class="math inline">\(\beta_2\)</span>) = 0.1</li>
-</ul>
+<li><strong>Omitted variable bias:</strong> This bivariate regression excludes Stress, which is part of the true relationship. The omission of Stress causes the coefficient on Time to be biased.</li>
+<li><strong>Non-linear relationship:</strong> The relationship between Time and Anxiety is not perfectly linear, but linear regression forces a linear fit, leading to incorrect coefficient estimates.</li>
+</ul></li>
+<li><p><strong>Key insight:</strong> Even though Time appears to be a “good” predictor of Anxiety (linear relationship, high correlation), using it in a linear regression produces coefficient estimates that are systematically wrong. This demonstrates that <strong>predictors with non-linear relationships to the true variable can lead to misleading regression results</strong>, even when the predictor seems reasonable at first glance.</p></li>
+<li><p><strong>The danger:</strong> If a researcher were to interpret the estimated coefficient as the true effect of time on anxiety, they would be making a fundamental error. The regression coefficient tells us about the relationship between Time and Anxiety, not the true relationship between Stress and Anxiety.</p></li>
+</ol>
+<ol start="4" type="I">
+<li><strong>Visualization of Bivariate Relationship:</strong> Create a scatter plot with the regression line showing the relationship between Time and Anxiety.</li>
+</ol>
+<div id="cell-bivariate-regression-time-plot" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\soujanya\venv\Lib\site-packages\sklearn\utils\validation.py:2749: UserWarning: X does not have valid feature names, but LinearRegression was fitted with feature names
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="bivariate-regression-time-plot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/bivariate-regression-time-plot-output-2.png" width="758" height="469" class="figure-img"></p>
+<figcaption>Scatter plot with regression line: Anxiety on Time</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Model Fit Summary:
+  R² = 0.9011
+  This means the model explains 90.11% of the variance in Anxiety</code></pre>
+</div>
+</div>
+<p>Answer: The scatter plot shows a positive relationship between Time and Anxiety, with most points clustering relatively close to the regression line. The R² value indicates that the model explains about 56% of the variance in Anxiety.</p>
+<p>V. <strong>Multiple Regression Analysis:</strong> Run a multiple regression of Anxiety on both StressSurvey and Time. What are the estimated coefficients? How do they compare to the true relationship?</p>
+<div id="multiple-regression-stresssurvey-time" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================
+MULTIPLE REGRESSION: Anxiety on StressSurvey and Time
+============================================================
+
+Intercept (beta_0): 0.5888
+Coefficient on StressSurvey (beta_1): 1.4269
+Coefficient on Time (beta_2): -2.7799
+R-squared: 0.9350
+
+============================================================
+STATSMODELS DETAILED OUTPUT:
+============================================================
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.935
+Model:                            OLS   Adj. R-squared:                  0.924
+Method:                 Least Squares   F-statistic:                     86.32
+Date:                Tue, 11 Nov 2025   Prob (F-statistic):           7.54e-08
+Time:                        21:46:09   Log-Likelihood:                -23.931
+No. Observations:                  15   AIC:                             53.86
+Df Residuals:                      12   BIC:                             55.99
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+================================================================================
+                   coef    std err          t      P&gt;|t|      [0.025      0.975]
+--------------------------------------------------------------------------------
+const            0.5888      1.034      0.569      0.580      -1.664       2.841
+StressSurvey     1.4269      0.172      8.287      0.000       1.052       1.802
+Time            -2.7799      1.111     -2.502      0.028      -5.201      -0.359
+==============================================================================
+Omnibus:                        1.255   Durbin-Watson:                   1.043
+Prob(Omnibus):                  0.534   Jarque-Bera (JB):                1.051
+Skew:                           0.546   Prob(JB):                        0.591
+Kurtosis:                       2.302   Cond. No.                         31.9
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
+</div>
+</div>
+<p><strong>Answer:</strong> Those figures are the fitted statistics for the multiple regression Anxiety ~ StressSurvey + Time: Intercept ≈ 0.5888 StressSurvey coefficient ≈ 1.4269 Time coefficient ≈ -2.7799 R² ≈ 0.9350 The true data-generating process was Anxiety = Stress + 0.1 × Time, so both slope estimates are off: the proxy StressSurvey overstates the stress effect (1.4269 vs 1.0), and the time coefficient flips sign and becomes large and negative instead of the true -2.7799. The high R² just means the model still fits the sample well, not that the coefficients are trustworthy; the non-linear proxy and the collinearity between stress and time push the interpretation in the wrong direction.</p>
+<p><strong>Comparison to True Relationship:</strong> Multiple regression of Anxiety on StressSurvey and Time gives an intercept around 0.5888, a coefficient on StressSurvey around 1.4269, and a coefficient on Time around -2.7799, with R² ≈ 0.9350. The true data-generating process assigns 1 to Stress, 0.1 to Time, and the intercept is 0, so this multiple regression captures both stress and time effects. The coefficients are close to the true values, and the model explains about 93.5% of the variance in Anxiety.</p>
 <p><strong>Key Questions:</strong></p>
 <ul>
-<li>Are your estimated coefficients close to these true values?</li>
-<li>If not, what does this tell you about the reliability of your regression model?</li>
-<li>Even if your R-squared is high, are the coefficients telling the right story?</li>
+<li><p>Are your estimated coefficients close to these true values? No.&nbsp;Using StressSurvey and Time, we got roughly β₀ ≈ 0.59, β₁ ≈ 1.43, β₂ ≈ -2.78, while the truth is 0, 1, 0.1. The proxy is nonlinear, so the stress effect inflates and the time effect flips sign.</p></li>
+<li><p>If not, what does this tell you about the reliability of your regression model? When key inputs are measured with nonlinear proxies (or drivers are omitted), the regression picks up proxy quirks instead of the real relationship. Statistical significance doesn’t rescue those coefficients—they’re biased.</p></li>
+<li><p>Even if your R-squared is high, are the coefficients telling the right story? No.&nbsp;R² measures fit, not truth. Even if a model fits well, its coefficients can be wrong if the relationship is non-linear or if key drivers are omitted.</p></li>
 </ul>
-</div>
-</div>
 </section>
 <section id="questions-to-answer-for-85-grade-on-challenge" class="level3">
 <h3 class="anchored" data-anchor-id="questions-to-answer-for-85-grade-on-challenge">Questions to Answer for 85% Grade on Challenge</h3>
-<ol start="6" type="1">
-<li><p><strong>Multiple Regression Analysis:</strong> Run a multiple regression of Anxiety on both <strong>Stress</strong> and Time. What are the estimated coefficients? How do they compare to the true relationship?</p></li>
-<li><p><strong>Model Comparison:</strong> Compare the R-squared values and coefficient interpretations between the two multiple regression models. Do both models show statistical significance in all of their coefficient estimates? What does this tell you about the real-world implications of multiple regression results?</p></li>
+<ol start="6" type="I">
+<li><strong>Multiple Regression Analysis:</strong> Run a multiple regression of Anxiety on both <strong>Stress</strong> and Time. What are the estimated coefficients? How do they compare to the true relationship?</li>
 </ol>
+<div id="multiple-regression-stress-time" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-stdout">
+<pre><code>============================================================
+MULTIPLE REGRESSION: Anxiety ~ Stress + Time
+============================================================
+
+Intercept (beta_0): -0.0000
+Coefficient on Stress (beta_1): 1.0000
+Coefficient on Time (beta_2): 0.1000
+R-squared: 1.0000
+
+============================================================
+STATSMODELS DETAILED OUTPUT:
+============================================================
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       1.000
+Model:                            OLS   Adj. R-squared:                  1.000
+Method:                 Least Squares   F-statistic:                 8.600e+31
+Date:                Tue, 11 Nov 2025   Prob (F-statistic):          1.15e-187
+Time:                        21:46:09   Log-Likelihood:                 493.62
+No. Observations:                  15   AIC:                            -981.2
+Df Residuals:                      12   BIC:                            -979.1
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const        1.11e-16   1.02e-15      0.109      0.915   -2.11e-15    2.34e-15
+Stress         1.0000   1.15e-16   8.67e+15      0.000       1.000       1.000
+Time           0.1000   8.12e-16   1.23e+14      0.000       0.100       0.100
+==============================================================================
+Omnibus:                        3.041   Durbin-Watson:                   0.639
+Prob(Omnibus):                  0.219   Jarque-Bera (JB):                1.362
+Skew:                           0.357   Prob(JB):                        0.506
+Kurtosis:                       1.709   Cond. No.                         23.9
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
+</div>
+</div>
+<p><strong>Answer:</strong> Those figures are the fitted statistics for the multiple regression Anxiety ~ Stress + Time: Intercept ≈ -0.0000 Stress coefficient ≈ 1.0000 Time coefficient ≈ 0.1000 R² ≈ 1.0000 The true data-generating process was Anxiety = Stress + 0.1 × Time, so both slope estimates are off: the stress coefficient overstates the stress effect (1.0000 vs 1.0), and the time coefficient is small and positive instead of the true 0.1000. The high R² just means the model still fits the sample well, not that the coefficients are trustworthy; the collinearity between stress and time pushes the interpretation in the wrong direction.</p>
+<p><strong>Comparison to True Relationship:</strong></p>
+<p>Multiple regression of Anxiety on Stress and Time gives an intercept around -0.0000, a coefficient on Stress around 1.0000, and a coefficient on Time around 0.1000, with R² ≈ 1.0000. The true data-generating process assigns 1 to Stress, 0.1 to Time, and the intercept is 0, so this multiple regression captures both stress and time effects. The coefficients are close to the true values, and the model explains about 100% of the variance in Anxiety.</p>
+<ol start="7" type="I">
+<li><strong>Model Comparison:</strong> Compare the R-squared values and coefficient interpretations between the two multiple regression models. Do both models show statistical significance in all of their coefficient estimates? What does this tell you about the real-world implications of multiple regression results?</li>
+</ol>
+<div id="cell-model-comparison" class="cell" data-execution_count="10">
+<div id="model-comparison" class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Model</th>
+<th data-quarto-table-cell-role="th">R_squared</th>
+<th data-quarto-table-cell-role="th">Adj_R_squared</th>
+<th data-quarto-table-cell-role="th">Const_est</th>
+<th data-quarto-table-cell-role="th">Const_pvalue</th>
+<th data-quarto-table-cell-role="th">StressSurvey_est</th>
+<th data-quarto-table-cell-role="th">StressSurvey_pvalue</th>
+<th data-quarto-table-cell-role="th">Time_est</th>
+<th data-quarto-table-cell-role="th">Time_pvalue</th>
+<th data-quarto-table-cell-role="th">Tags</th>
+<th data-quarto-table-cell-role="th">Stress_est</th>
+<th data-quarto-table-cell-role="th">Stress_pvalue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Anxiety ~ StressSurvey + Time</td>
+<td>0.935005</td>
+<td>0.924173</td>
+<td>5.887578e-01</td>
+<td>0.579542</td>
+<td>1.426926</td>
+<td>0.000003</td>
+<td>-2.779944</td>
+<td>2.781595e-02</td>
+<td>proxy + time</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Anxiety ~ Stress + Time</td>
+<td>1.000000</td>
+<td>1.000000</td>
+<td>1.110223e-16</td>
+<td>0.915218</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.100000</td>
+<td>5.563718e-164</td>
+<td>true stress + time</td>
+<td>1.0</td>
+<td>3.737032e-186</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<p>Comparing StressSurvey vs Stress multiple regressions</p>
+</div>
+</div>
 </section>
 <section id="questions-to-answer-for-95-grade-on-challenge" class="level3">
 <h3 class="anchored" data-anchor-id="questions-to-answer-for-95-grade-on-challenge">Questions to Answer for 95% Grade on Challenge</h3>
-<ol start="8" type="1">
-<li><strong>Reflect on Real-World Implications:</strong> For each of the two multiple regression models, assume their respective outputs/conclusions were published in academic journals and then subsequently picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect to see from a popular press outlet covering the first model? And what headline would you expect to see from a popular press outlet covering the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer?</li>
+<ol start="8" type="I">
+<li><strong>Reflect on Real-World Implications:</strong> For each of the two multiple regression models, assume their respective outputs/conclusions were published in academic journals and then subsequently picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect to see from a popular press outlet covering the first model? And what headline would you expect to see from a popular press outlet covering the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer? Model 1 (using StressSurvey + Time) produces a big negative slope on time, so the popular press headline would read something like “More Minutes on Social Media Slash Anxiety Levels.” Model 2 (using true Stress + Time) recovers the tiny positive 0.1 slope, so you’d see “Stress Drives Anxiety; Social Media Time Has Only a Minor Effect.” A parent already wary of social media will latch onto the dramatic first headline because it locks in their confirmation bias (either “see, heavy use makes kids calmer” or “the study is obviously flawed”). The social platforms prefer the second model: it says their apps barely move the needle once stress is measured correctly.</li>
 </ol>
 </section>
 <section id="questions-to-answer-for-100-grade-on-challenge" class="level3">
 <h3 class="anchored" data-anchor-id="questions-to-answer-for-100-grade-on-challenge">Questions to Answer for 100% Grade on Challenge</h3>
-<ol start="9" type="1">
+<ol start="9" type="I">
 <li><strong>Avoiding Misleading Statistical Significance:</strong> Reflect on this tip to avoid being misled by statistically significant results: splitting the sample into meaningful subsets (“statistical regimes”), and using graphical diagnostics for linearity rather than blind reliance on “canned” regressions. Apply this approach to multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?</li>
 </ol>
+<div id="subset-regression" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-stdout">
+<pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       1.000
+Model:                            OLS   Adj. R-squared:                  1.000
+Method:                 Least Squares   F-statistic:                 5.366e+30
+Date:                Tue, 11 Nov 2025   Prob (F-statistic):           1.75e-91
+Time:                        21:46:09   Log-Likelihood:                 301.93
+No. Observations:                   9   AIC:                            -597.9
+Df Residuals:                       6   BIC:                            -597.3
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+================================================================================
+                   coef    std err          t      P&gt;|t|      [0.025      0.975]
+--------------------------------------------------------------------------------
+const         2.887e-16   6.31e-16      0.458      0.663   -1.26e-15    1.83e-15
+StressSurvey     0.3333   2.17e-16   1.53e+15      0.000       0.333       0.333
+Time             0.1000   8.46e-16   1.18e+14      0.000       0.100       0.100
+==============================================================================
+Omnibus:                        7.901   Durbin-Watson:                   0.278
+Prob(Omnibus):                  0.019   Jarque-Bera (JB):                2.800
+Skew:                          -1.261   Prob(JB):                        0.247
+Kurtosis:                       4.051   Cond. No.                         15.8
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
+</div>
+</div>
+<p><strong>Answer:</strong> I split the data at StressSurvey ≤ 6, keeping only the low-to-moderate regime where the survey proxy is almost linear, ran Anxiety ~ StressSurvey + Time, and got coefficients close to the truth with both slopes statistically significant—showing that a smart subset (plus checking the proxy’s shape) prevents the misleading negative time effect we saw in the full samples</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-🎯 For 100% Grade: Focus on What’s Most Interesting
+<span class="screen-reader-only">Tip</span>🎯 For 100% Grade: Focus on What’s Most Interesting
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -622,126 +698,13 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 </div>
 </section>
 </section>
-<section id="technical-implementation-preferences" class="level2">
-<h2 class="anchored" data-anchor-id="technical-implementation-preferences">Technical Implementation Preferences 💡</h2>
-<section id="setting-up-your-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="setting-up-your-analysis">Setting Up Your Analysis</h3>
-<ul>
-<li>Use <code>pandas</code> for data manipulation</li>
-<li>Use <code>matplotlib</code> and <code>seaborn</code> for visualizations</li>
-<li>Use <code>sklearn.linear_model</code> for regression analysis</li>
-<li>Use <code>statsmodels</code> for detailed regression output</li>
-</ul>
-</section>
-<section id="visualization-preferences" class="level3">
-<h3 class="anchored" data-anchor-id="visualization-preferences">Visualization Preferences</h3>
-<ul>
-<li><strong>Professional Styling:</strong> Use consistent colors, clear labels, readable fonts, and informative titles</li>
-</ul>
-</section>
-</section>
-<section id="submission-checklist" class="level2">
-<h2 class="anchored" data-anchor-id="submission-checklist">Submission Checklist ✅</h2>
-<p><strong>Minimum Requirements (Required for Any Points):</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Forked starter repository from <a href="https://github.com/flyaflya/regressionChallenge.git">https://github.com/flyaflya/regressionChallenge.git</a></label></li>
-<li><label><input type="checkbox">Cloned repository locally using Cursor (or VS Code)</label></li>
-<li><label><input type="checkbox">Quarto document updated with clear narrative (use the provided <code>index.qmd</code> template)</label></li>
-<li><label><input type="checkbox">Document rendered to HTML successfully</label></li>
-<li><label><input type="checkbox">HTML files uploaded to your forked repository</label></li>
-<li><label><input type="checkbox">GitHub Pages enabled and working</label></li>
-<li><label><input type="checkbox">Site accessible at <code>https://[your-username].github.io/regressionChallenge/</code></label></li>
-</ul>
-<p><strong>75% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Bivariate regression analysis with StressSurvey and coefficient interpretation (Question 1)</label></li>
-<li><label><input type="checkbox">Scatter plot with regression line for StressSurvey and interpretation (Question 2)</label></li>
-<li><label><input type="checkbox">Bivariate regression analysis with Time and coefficient interpretation (Question 3)</label></li>
-<li><label><input type="checkbox">Scatter plot with regression line for Time and interpretation (Question 4)</label></li>
-<li><label><input type="checkbox">Multiple regression analysis with StressSurvey and Time and coefficient comparison (Question 5)</label></li>
-</ul>
-<p><strong>85% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Multiple regression analysis with Stress and Time (Question 6)</label></li>
-<li><label><input type="checkbox">Model comparison analysis between StressSurvey and Stress models (Question 7)</label></li>
-</ul>
-<p><strong>95% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Real-world implications and headline analysis (Question 8)</label></li>
-</ul>
-<p><strong>100% Grade Requirements:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Subset analysis to avoid misleading statistical significance (Question 9)</label></li>
-</ul>
-<p><strong>Code Quality (All Grades):</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Clean, well-commented code</label></li>
-<li><label><input type="checkbox">Appropriate use of regression functions</label></li>
-<li><label><input type="checkbox">Professional visualization styling</label></li>
-<li><label><input type="checkbox">Reproducible results</label></li>
-</ul>
-<p><strong>Report Quality (Critical for Higher Grades):</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox">Report structured as question and answer format (each question clearly stated, followed by answer)</label></li>
-<li><label><input type="checkbox">All challenge instructions, setup guides, and grading rubrics removed from final HTML</label></li>
-<li><label><input type="checkbox">Final report contains only Q&amp;A responses, code outputs, and visualizations</label></li>
-<li><label><input type="checkbox">Clear, engaging narrative that tells a story</label></li>
-<li><label><input type="checkbox">Focus on the most interesting findings about regression interpretability</label></li>
-<li><label><input type="checkbox">Professional writing style (no AI-generated fluff)</label></li>
-<li><label><input type="checkbox">Concise analysis that gets to the point</label></li>
-<li><label><input type="checkbox">Practical insights that would help a real data scientist</label></li>
-<li><label><input type="checkbox">Visualizations that support your narrative, not overwhelm it</label></li>
-</ul>
-<section id="resources" class="level3">
-<h3 class="anchored" data-anchor-id="resources">Resources</h3>
-<ul>
-<li><strong>Quarto Markdown:</strong> <a href="https://quarto.org/docs/authoring/markdown-basics.html">quarto.org/docs/authoring/markdown-basics.html</a></li>
-<li><strong>Quarto Documentation:</strong> <a href="https://quarto.org/docs">quarto.org/docs</a></li>
-<li><strong>Python Data Science Handbook:</strong> <a href="https://jakevdp.github.io/PythonDataScienceHandbook">jakevdp.github.io/PythonDataScienceHandbook</a></li>
-<li><strong>Regression Analysis:</strong> <a href="https://www.statlearning.com/">An Introduction to Statistical Learning</a></li>
-</ul>
-</section>
-</section>
 <section id="sec-regression-concepts" class="level2">
 <h2 class="anchored" data-anchor-id="sec-regression-concepts">Essential Regression Concepts 🎯</h2>
 <p>Before diving into the challenge, let’s review the key regression concepts you’ll need. These examples will prepare you for the garbage can regression analysis.</p>
 <section id="simple-linear-regression-the-basics" class="level3">
 <h3 class="anchored" data-anchor-id="simple-linear-regression-the-basics">1. Simple Linear Regression: The Basics</h3>
 <p>Let’s start with a basic linear regression to understand the mechanics:</p>
-<div id="cell-simple-regression-python" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create simple example data</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.normal(<span class="dv">10</span>, <span class="dv">3</span>, n)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x <span class="op">+</span> <span class="dv">3</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">2</span>, n)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear regression</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>model.fit(x.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), y)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display results</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Coefficient: </span><span class="sc">{</span>model<span class="sc">.</span>coef_[<span class="dv">0</span>]<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Intercept: </span><span class="sc">{</span>model<span class="sc">.</span>intercept_<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R-squared: </span><span class="sc">{</span>r2_score(y, model.predict(x.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)))<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scatter plot with regression line</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>ax.scatter(x, y, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>ax.plot(x, model.predict(x.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)), color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Simple Linear Regression'</span>)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'X Variable'</span>)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Y Variable'</span>)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-simple-regression-python" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>Coefficient: 1.949
 Intercept: 3.592
@@ -760,39 +723,7 @@ R-squared: 0.915</code></pre>
 <section id="multiple-regression-adding-complexity" class="level3">
 <h3 class="anchored" data-anchor-id="multiple-regression-adding-complexity">2. Multiple Regression: Adding Complexity</h3>
 <p>Now let’s see how multiple variables interact:</p>
-<div id="cell-multiple-regression-python" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">456</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create multiple regression example</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> np.random.normal(<span class="dv">10</span>, <span class="dv">3</span>, n)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.random.normal(<span class="dv">5</span>, <span class="dv">2</span>, n)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> x1 <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> x2 <span class="op">+</span> <span class="dv">3</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">2</span>, n)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit multiple regression</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([x1, x2])</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>model_multi <span class="op">=</span> LinearRegression()</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>model_multi.fit(X, y)</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Display results</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Coefficients: </span><span class="sc">{</span>model_multi<span class="sc">.</span>coef_<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Intercept: </span><span class="sc">{</span>model_multi<span class="sc">.</span>intercept_<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R-squared: </span><span class="sc">{</span>r2_score(y, model_multi.predict(X))<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Create pairs plot</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>data_df <span class="op">=</span> pd.DataFrame({<span class="st">'x1'</span>: x1, <span class="st">'x2'</span>: x2, <span class="st">'y'</span>: y})</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>sns.pairplot(data_df)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Pairs Plot: Multiple Regression Variables'</span>, y<span class="op">=</span><span class="fl">1.02</span>)</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-multiple-regression-python" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-stdout">
 <pre><code>Coefficients: [1.96423174 0.216209  ]
 Intercept: 4.969
@@ -813,7 +744,7 @@ R-squared: 0.867</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Statistical Significance at 5% Level
+<span class="screen-reader-only">Note</span>Statistical Significance at 5% Level
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -928,13 +859,14 @@ Statistical Significance at 5% Level
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
